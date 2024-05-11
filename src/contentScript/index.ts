@@ -10,6 +10,9 @@ function getCurrentWebsiteLink(): string {
 
 function handleInputFocus(event: FocusEvent) {
     const inputField = event.target as HTMLInputElement;
+    if(inputField.attributes.getNamedItem('type')?.value === 'password') {
+        return;
+    }
     const text = inputField.value.trim(); // Trim whitespace from the input
     const websiteLink = getCurrentWebsiteLink();
 
@@ -35,8 +38,6 @@ function handleBeforeUnload(event: BeforeUnloadEvent) {
 document.addEventListener("focusout", handleInputFocus, true);
 window.addEventListener("beforeunload", handleBeforeUnload);
 
-// get all the text values for the current website, sometimes website with the websitelink has some date added to it so get them too
-
 // Get the current website link
 const currentWebsiteLink = window.location.href;
 
@@ -44,14 +45,12 @@ const currentWebsiteLink = window.location.href;
 chrome.storage.local.get(null, (data) => {
     // Iterate over the keys
     for (const key in data) {
+        // Check if the key includes the current website link
         if (key.includes(currentWebsiteLink)) {
             // Extract the part of the key that corresponds to the current website link
             const keyWithoutTimestamp = key.replace(/-\d+$/, ''); // Remove the timestamp part
-            // If the key includes the current website link, print the saved text
             const savedText = data[key];
             console.log(`Saved text for key '${keyWithoutTimestamp}':`, savedText);
-            // Now you can do something with the saved text, such as filling input fields
-            // Example: document.getElementById('textInput').value = savedText;
         }
     }
 });

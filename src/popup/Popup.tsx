@@ -64,14 +64,12 @@ export const Popup = () => {
       <h3>Input Stash</h3>
       <div className="key-value-pair-list">
         <div className="key-value-pair">
-          {/* <div className="key">Key</div>
-          <div className="value">Value</div> */}
-          <div>Link Stash for the current tab</div>
+          <div>Input Stash for the current tab</div>
         </div>
         {keyValuePairs.map((keyValuePair, index) => (
           <div style={{display: "flex", alignItems: "center"}} className="key-value-pair" key={index}>
             <a style={{textDecoration:"none", padding: "5px 10px", margin: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black"}} className="key" href={keyValuePair.key} target="_blank">Link</a>
-            <div className="value">{keyValuePair.value}</div>
+            <div style={{alignItems: "start", textAlign: "start"}} className="value">{keyValuePair.value}</div>
           </div>
         ))}
       </div>
