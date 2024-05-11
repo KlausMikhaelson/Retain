@@ -33,16 +33,16 @@ export const Popup = () => {
           });
         });
         const newKeyValuePairs = [];
-        for (const key in data) {
+        for (const key in data as Record<string, string>) {
           if (key.includes(currentWebsiteLink)) {
             const keyWithoutTimestamp = key.replace(/-\d+$/, '');
-            const savedText = data[key];
+            const savedText = (data as Record<string, string>)[key];
             console.log(`Saved text for key '${keyWithoutTimestamp}':`, savedText);
             newKeyValuePairs.push({ key: keyWithoutTimestamp, value: savedText });
           }
         }
         console.log("newKeyValuePairs", newKeyValuePairs);
-        if(newKeyValuePairs.length === 0) {
+        if (newKeyValuePairs.length === 0) {
           return;
         } else {
           setKeyValuePairs(newKeyValuePairs); // Update keyValuePairs directly with newKeyValuePairs
@@ -64,12 +64,13 @@ export const Popup = () => {
       <h3>Input Stash</h3>
       <div className="key-value-pair-list">
         <div className="key-value-pair">
-          <div className="key">Key</div>
-          <div className="value">Value</div>
+          {/* <div className="key">Key</div>
+          <div className="value">Value</div> */}
+          <div>Link Stash for the current tab</div>
         </div>
         {keyValuePairs.map((keyValuePair, index) => (
-          <div className="key-value-pair" key={index}>
-            <div className="key">{keyValuePair.key}</div>
+          <div style={{display: "flex", alignItems: "center"}} className="key-value-pair" key={index}>
+            <a style={{textDecoration:"none", padding: "5px 10px", margin: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black"}} className="key" href={keyValuePair.key} target="_blank">Link</a>
             <div className="value">{keyValuePair.value}</div>
           </div>
         ))}
