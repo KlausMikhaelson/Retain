@@ -35,10 +35,10 @@ export const Popup = () => {
         const newKeyValuePairs = [];
         for (const key in data as Record<string, string>) {
           if (key.includes(currentWebsiteLink)) {
-            const keyWithoutTimestamp = key.replace(/-\d+$/, '');
+            // const keyWithoutTimestamp = key.replace(/-\d+$/, '');
             const savedText = (data as Record<string, string>)[key];
-            console.log(`Saved text for key '${keyWithoutTimestamp}':`, savedText);
-            newKeyValuePairs.push({ key: keyWithoutTimestamp, value: savedText });
+            console.log(`Saved text for key '${key}':`, savedText);
+            newKeyValuePairs.push({ key: key, value: savedText });
           }
         }
         console.log("newKeyValuePairs", newKeyValuePairs);
@@ -68,7 +68,7 @@ export const Popup = () => {
         </div>
         {keyValuePairs.map((keyValuePair, index) => (
           <div style={{display: "flex", alignItems: "center"}} className="key-value-pair" key={index}>
-            <a style={{textDecoration:"none", padding: "5px 10px", margin: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black"}} className="key" href={keyValuePair.key} target="_blank">Link</a>
+            <a style={{textDecoration:"none", padding: "5px 10px", margin: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black"}} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a>
             <div style={{alignItems: "start", textAlign: "start"}} className="value">{keyValuePair.value}</div>
           </div>
         ))}

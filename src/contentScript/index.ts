@@ -48,9 +48,9 @@ chrome.storage.local.get(null, (data) => {
         // Check if the key includes the current website link
         if (key.includes(currentWebsiteLink)) {
             // Extract the part of the key that corresponds to the current website link
-            const keyWithoutTimestamp = key.replace(/-\d+$/, ''); // Remove the timestamp part
+            // const keyWithoutTimestamp = key.replace(/-\d+$/, ''); // Remove the timestamp part
             const savedText = data[key];
-            console.log(`Saved text for key '${keyWithoutTimestamp}':`, savedText);
+            console.log(`Saved text for key '${key}':`, savedText);
         }
     }
 });
