@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-
+import Logo from "../assets/logo.png";
 import './Popup.css'
+
 
 export const Popup = () => {
   const [keyValuePairs, setKeyValuePairs] = useState<{ key: string, value: string }[]>([])
@@ -67,12 +68,11 @@ export const Popup = () => {
   }, [keyValuePairs]);
 
   return (
-    <main>
-      <h3>Input Stash</h3>
-      <div className="key-value-pair-list">
-        <div className="key-value-pair" style={{margin: "20px"}}>
-          <div>Input Stash for the current tab</div>
-        </div>
+    <div className="key-value-pair-list" style={{ borderRadius: "8px", border: "2px", borderColor: "white", margin: "10px", marginBottom: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ position: "absolute", top: "0px", marginTop: "-50px"}}>
+        <img src={Logo} alt="Logo" style={{ height: "200px" }} />
+      </div>
+      <div style={{ borderWidth: "5px", borderStyle: "solid", borderColor: "white", borderRadius: "8px", height: "85vh", marginTop: "40px", overflow: "auto" }}>
         {keyValuePairs.map((keyValuePair, index) => {
           const sortedWithTimestamp = keyValuePairs.sort((a, b) => {
             const aTimestamp = parseInt(a.key.split("-")[1]);
@@ -80,19 +80,18 @@ export const Popup = () => {
             return bTimestamp - aTimestamp;
           }
           );
-
           return (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px" }} className="key-value-pair" key={index}>
-              <div style={{display:"flex"}}>
-              <a style={{ textDecoration: "none",height: "15px", padding: "5px 10px", marginRight: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black" }} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a>
-              <div style={{ alignItems: "start", textAlign: "start" }} className="value">{keyValuePair.value}</div>
+            <div style={{ display: "flex", alignItems: "start", justifyContent: "space-between", padding: "8px", margin: "8px", borderRadius: "8px", borderWidth: "2px", borderColor: "white", borderStyle: "solid" }} className="key-value-pair" key={index}>
+              <div style={{ display: "flex" }}>
+                {/* <a style={{ textDecoration: "none",height: "15px", padding: "5px 10px", marginRight: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black" }} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a> */}
+                <div style={{ alignItems: "start", textAlign: "start" }} className="value">{keyValuePair.value}</div>
               </div>
               <button style={{ marginLeft: "10px" }} onClick={() => deleteKeyValuePair(keyValuePair.key)}>Delete</button>
             </div>
           )
         })}
       </div>
-    </main>
+    </div>
   )
 }
 
