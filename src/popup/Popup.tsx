@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
-
+import Logo from "../assets/logo.png";
 import './Popup.css'
+import CopyIcon from "../assets/copyIcon.png";
+
 
 export const Popup = () => {
   const [keyValuePairs, setKeyValuePairs] = useState<{ key: string, value: string }[]>([])
@@ -61,18 +63,22 @@ export const Popup = () => {
       setKeyValuePairs(newKeyValuePairs);
     });
   }
+  
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  }
 
   useEffect(() => {
     console.log("keyValuePairs", keyValuePairs);
   }, [keyValuePairs]);
 
   return (
-    <main>
-      <h3>Input Stash</h3>
-      <div className="key-value-pair-list">
-        <div className="key-value-pair" style={{margin: "20px"}}>
-          <div>Input Stash for the current tab</div>
-        </div>
+    <div className="key-value-pair-list" style={{ borderRadius: "8px", border: "2px", borderColor: "white", margin: "10px", marginBottom: "20px", display: "flex", alignItems: "center", justifyContent: "center" , flexDirection: "column"}}>
+      <div style={{  top: "0px"}}>
+        {/* <img src={Logo} alt="Logo" style={{ height: "170px", width: "200px" }} /> */}
+        <h1>reta<small style={{color: "#5271FF"}}>↓</small>n</h1>
+      </div>
+      <div style={{ borderWidth: "5px", borderStyle: "solid", borderColor: "white", borderRadius: "8px", height: "85vh", marginTop: "-10px",width: "90vw", overflow: "auto" }}>
         {keyValuePairs.map((keyValuePair, index) => {
           const sortedWithTimestamp = keyValuePairs.sort((a, b) => {
             const aTimestamp = parseInt(a.key.split("-")[1]);
@@ -80,19 +86,21 @@ export const Popup = () => {
             return bTimestamp - aTimestamp;
           }
           );
-
           return (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px" }} className="key-value-pair" key={index}>
-              <div style={{display:"flex"}}>
-              <a style={{ textDecoration: "none",height: "15px", padding: "5px 10px", marginRight: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black" }} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a>
-              <div style={{ alignItems: "start", textAlign: "start" }} className="value">{keyValuePair.value}</div>
+            <div style={{ display: "flex", alignItems: "start", justifyContent: "space-between", padding: "8px", margin: "8px", borderRadius: "8px", borderWidth: "2px", borderColor: "white", borderStyle: "solid" }} className="key-value-pair" key={index}>
+              <div style={{ display: "flex" }}>
+                {/* <a style={{ textDecoration: "none",height: "15px", padding: "5px 10px", marginRight: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black" }} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a> */}
+                <div style={{ alignItems: "start", textAlign: "start" }} className="value">{keyValuePair.value}</div>
               </div>
+              <div style={{display: "flex", flexDirection: "column", gap: "10px"}}>
               <button style={{ marginLeft: "10px" }} onClick={() => deleteKeyValuePair(keyValuePair.key)}>Delete</button>
+              <button style={{ marginLeft: "10px" }} onClick={() => copyToClipboard(keyValuePair.value)}>Copy</button>
+              </div>
             </div>
           )
         })}
       </div>
-    </main>
+    </div>
   )
 }
 
