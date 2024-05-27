@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 
 import './Popup.css'
+import Forms from './Forms';
 
 export const Popup = () => {
   const [keyValuePairs, setKeyValuePairs] = useState<{ key: string, value: string }[]>([])
+  const [showForm, setShowForm] = useState(false);
+
   useEffect(() => {
     chrome.runtime.sendMessage({ action: 'getCurrentTabUrl' }, (response) => {
       if (response) {
@@ -69,29 +72,34 @@ export const Popup = () => {
   return (
     <main>
       <h3>Input Stash</h3>
-      <div className="key-value-pair-list">
-        <div className="key-value-pair" style={{margin: "20px"}}>
-          <div>Input Stash for the current tab</div>
-        </div>
-        {keyValuePairs.map((keyValuePair, index) => {
-          const sortedWithTimestamp = keyValuePairs.sort((a, b) => {
-            const aTimestamp = parseInt(a.key.split("-")[1]);
-            const bTimestamp = parseInt(b.key.split("-")[1]);
-            return bTimestamp - aTimestamp;
-          }
-          );
+      <h3 onClick={() => setShowForm(!showForm)}>Form GPT</h3>
+      {showForm ? (
+        <Forms />
+      ) : (
+        <div className="key-value-pair-list">
+          <div className="key-value-pair" style={{ margin: "20px" }}>
+            <div>Input Stash for the current tab</div>
+          </div>
+          {keyValuePairs.map((keyValuePair, index) => {
+            const sortedWithTimestamp = keyValuePairs.sort((a, b) => {
+              const aTimestamp = parseInt(a.key.split("-")[1]);
+              const bTimestamp = parseInt(b.key.split("-")[1]);
+              return bTimestamp - aTimestamp;
+            }
+            );
 
-          return (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px" }} className="key-value-pair" key={index}>
-              <div style={{display:"flex"}}>
-              <a style={{ textDecoration: "none",height: "15px", padding: "5px 10px", marginRight: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black" }} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a>
-              <div style={{ alignItems: "start", textAlign: "start" }} className="value">{keyValuePair.value}</div>
+            return (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px" }} className="key-value-pair" key={index}>
+                <div style={{ display: "flex" }}>
+                  <a style={{ textDecoration: "none", height: "15px", padding: "5px 10px", marginRight: "10px", borderRadius: "5px", backgroundColor: "#1877F2", color: "black" }} className="key" href={keyValuePair.key.split(/-\d+$/)[0]} target="_blank">Link</a>
+                  <div style={{ alignItems: "start", textAlign: "start" }} className="value">{keyValuePair.value}</div>
+                </div>
+                <button style={{ marginLeft: "10px" }} onClick={() => deleteKeyValuePair(keyValuePair.key)}>Delete</button>
               </div>
-              <button style={{ marginLeft: "10px" }} onClick={() => deleteKeyValuePair(keyValuePair.key)}>Delete</button>
-            </div>
-          )
-        })}
-      </div>
+            )
+          })}
+        </div>
+      )}
     </main>
   )
 }
